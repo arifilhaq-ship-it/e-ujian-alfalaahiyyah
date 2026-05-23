@@ -1,6 +1,6 @@
 "use client";
-import { useState } from "react";
-import { useRouter } from "next/navigation"; // <-- Ini yang sebelumnya kurang kata 'next/'
+import { useState, FormEvent } from "react";
+import { useRouter } from "next/navigation";
 
 export default function LoginUjian() {
   const [nama, setNama] = useState("");
@@ -8,8 +8,8 @@ export default function LoginUjian() {
   const [token, setToken] = useState("");
   const router = useRouter();
 
-  // Menambahkan ': any' agar TypeScript di Vercel tidak error
-  const handleLogin = (e: any) => { 
+  // Mengganti 'any' dengan 'FormEvent' agar Vercel tidak error
+  const handleLogin = (e: FormEvent) => { 
     e.preventDefault();
     if (token === "FALAAH2025") {
       alert(`Selamat mengerjakan, ${nama}! Layar akan dikunci.`);
