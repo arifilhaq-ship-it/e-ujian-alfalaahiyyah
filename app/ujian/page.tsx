@@ -9,13 +9,15 @@ export default function HalamanUjian() {
   useEffect(() => {
     const elem = document.documentElement;
     if (elem.requestFullscreen) {
-      elem.requestFullscreen().catch((err) => console.log("Fullscreen diblokir: ", err));
+      // Menghapus 'err' agar TypeScript tidak error
+      elem.requestFullscreen().catch(() => console.log("Fullscreen diblokir browser"));
     }
   }, []);
 
   const selesaikanUjian = () => {
     if (document.exitFullscreen) {
-      document.exitFullscreen().catch((err) => console.log("Gagal keluar fullscreen: ", err));
+      // Menghapus 'err' agar TypeScript tidak error
+      document.exitFullscreen().catch(() => console.log("Gagal keluar fullscreen"));
     }
     alert("Ujian Selesai. Jawaban Anda telah disimpan.");
     router.push("/");
