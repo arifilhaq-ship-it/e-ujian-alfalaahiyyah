@@ -1,61 +1,57 @@
 "use client";
-import { useState, FormEvent } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-export default function LoginUjian() {
-  const [nama, setNama] = useState("");
-  const [kelas, setKelas] = useState("7B");
-  const [token, setToken] = useState("");
+export default function HalamanUjian() {
   const router = useRouter();
 
-  // Mengganti 'any' dengan 'FormEvent' agar Vercel tidak error
-  const handleLogin = (e: FormEvent) => { 
-    e.preventDefault();
-    if (token === "FALAAH2025") {
-      alert(`Selamat mengerjakan, ${nama}! Layar akan dikunci.`);
-      router.push("/ujian");
-    } else {
-      alert("Token ujian salah. Silakan hubungi admin atau proktor.");
+  // Fitur Anti-Curang: Memaksa Fullscreen saat halaman dimuat
+  useEffect(() => {
+    const elem = document.documentElement;
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen().catch((err) => console.log("Fullscreen diblokir: ", err));
     }
+  }, []);
+
+  const selesaikanUjian = () => {
+    if (document.exitFullscreen) {
+      document.exitFullscreen().catch((err) => console.log("Gagal keluar fullscreen: ", err));
+    }
+    alert("Ujian Selesai. Jawaban Anda telah disimpan.");
+    router.push("/");
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md border-t-4 border-green-600">
-        <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">CBT MTs Al Falaahiyyah</h1>
-          <p className="text-gray-500 text-sm">Tahun Ajaran 2025/2026</p>
+    <div className="min-h-screen bg-gray-50 p-6 select-none">
+      <div className="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-md">
+        <div className="flex justify-between items-center border-b pb-4 mb-6">
+          <h2 className="text-xl font-bold">Simulasi Ujian Informatika</h2>
+          <div className="text-red-600 font-bold bg-red-100 px-4 py-2 rounded-full">
+            Sisa Waktu: 60:00
+          </div>
         </div>
 
-        <form onSubmit={handleLogin} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Nama Lengkap</label>
-            <input type="text" required value={nama} onChange={(e) => setNama(e.target.value)} className="mt-1 w-full p-2 border rounded-md" placeholder="Masukkan nama..." />
+        <div className="mb-8">
+          <p className="text-lg font-medium text-gray-800 mb-4">1. Apa fungsi utama dari Microsoft Excel?</p>
+          <div className="space-y-3">
+            <label className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+              <input type="radio" name="q1" className="h-5 w-5" />
+              <span>A. Membuat presentasi</span>
+            </label>
+            <label className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+              <input type="radio" name="q1" className="h-5 w-5" />
+              <span>B. Mengolah data angka dan tabel</span>
+            </label>
+            <label className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+              <input type="radio" name="q1" className="h-5 w-5" />
+              <span>C. Mengedit video pembelajaran</span>
+            </label>
           </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Kelas</label>
-            <select value={kelas} onChange={(e) => setKelas(e.target.value)} className="mt-1 w-full p-2 border rounded-md">
-              <option value="7B">Kelas 7B</option>
-              <option value="7D">Kelas 7D</option>
-              <option value="8A">Kelas 8A</option>
-              <option value="8D">Kelas 8D</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Token Ujian</label>
-            <input type="text" required value={token} onChange={(e) => setToken(e.target.value)} className="mt-1 w-full p-2 border rounded-md" placeholder="Masukkan token..." />
-          </div>
-
-          <button type="submit" className="w-full bg-green-600 text-white p-2 rounded-md font-bold hover:bg-green-700 transition">
-            Mulai Ujian
-          </button>
-        </form>
-
-        <div className="mt-6 text-center text-xs text-gray-400">
-          <p>Disusun oleh Arifil Haque</p>
         </div>
+
+        <button onClick={selesaikanUjian} className="bg-red-600 text-white px-6 py-2 rounded-md font-bold hover:bg-red-700 transition">
+          Akhiri Ujian
+        </button>
       </div>
     </div>
   );
